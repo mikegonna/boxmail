@@ -91,13 +91,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 name="password"
                 type="password"
                 autocomplete="current-password"
-                maxlength="255"
+                maxlength="8"
                 required
             >
 
             <button class="button" type="submit">เข้าสู่ระบบ</button>
         </form>
 
+        <p class="form-footer"><a href="password_reset_request.php">ลืมรหัสผ่าน?</a></p>
         <p class="form-footer">ยังไม่มีบัญชี? <a href="register.php">สมัครสมาชิก</a></p>
     </main>
 </body>

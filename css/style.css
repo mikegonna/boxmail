@@ -25,6 +25,10 @@ body {
     box-shadow: 0 22px 65px rgba(37, 45, 80, 0.1);
 }
 
+.card-wide {
+    width: min(100%, 760px);
+}
+
 .brand-mark {
     width: 44px;
     height: 44px;
@@ -120,6 +124,14 @@ a:focus-visible {
     background: #e6e8f4;
 }
 
+.button-danger {
+    background: #b74242;
+}
+
+.button-danger:hover {
+    background: #9e3434;
+}
+
 .form-footer {
     margin: 22px 0 0;
     color: #73788b;
@@ -174,8 +186,85 @@ a:hover {
     color: #73788b;
 }
 
+.request-list {
+    display: grid;
+    gap: 12px;
+}
+
+.request-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px;
+    border: 1px solid #e8eaf2;
+    border-radius: 12px;
+}
+
+.request-details {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+    font-size: 13px;
+}
+
+.request-details span,
+.empty-state {
+    color: #73788b;
+}
+
+.request-actions {
+    display: grid;
+    flex: 0 0 160px;
+    gap: 8px;
+}
+
+.request-actions form {
+    display: block;
+}
+
+.request-actions .button {
+    width: 100%;
+    min-height: 40px;
+    margin: 0;
+    padding: 8px;
+    font-size: 12px;
+}
+
+.reset-link-box {
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid #b9e4ca;
+    border-radius: 12px;
+    background: #effaf3;
+}
+
+.reset-link-box h2 {
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+
+.reset-link-box p {
+    color: #496555;
+    font-size: 13px;
+}
+
+.reset-link-box input {
+    font-size: 12px;
+}
+
 @media (max-width: 480px) {
     .card {
         padding: 28px 22px;
+    }
+
+    .request-item {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .request-actions {
+        flex-basis: auto;
+        grid-template-columns: 1fr 1fr;
     }
 }

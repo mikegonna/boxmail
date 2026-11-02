@@ -46,6 +46,40 @@ function escape(string $value): string
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+function app_url(string $path): string
+{
+    $configuredUrl = getenv('APP_URL');
+    if ($configuredUrl !== false && $configuredUrl !== '') {
+        $parts = parse_url($configuredUrl);
+        if (
+            $parts === false
+            || !isset($parts['scheme'], $parts['host'])
+            || !in_array(strtolower($parts['scheme']), ['http', 'https'], true)
+            || isset($parts['user'])
+            || isset($parts['pass'])
+        ) {
+            throw new RuntimeException('APP_URL must be an absolute HTTP or HTTPS URL.');
+        }
+
+        $baseUrl = rtrim($configuredUrl, '/');
+    } else {
+        $scheme = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http';
+        $host = $_SERVER['SERVER_NAME'] ?? 'localhost';
+        if (!preg_match('/\A[a-zA-Z0-9.-]+\z/', $host)) {
+            throw new RuntimeException('Invalid server name.');
+        }
+
+        $port = (int) ($_SERVER['SERVER_PORT'] ?? 0);
+        $portSuffix = $port > 0 && !(($scheme === 'http' && $port === 80) || ($scheme === 'https' && $port === 443))
+            ? ':' . $port
+            : '';
+        $directory = str_replace('\\', '/', dirname((string) ($_SERVER['SCRIPT_NAME'] ?? '/')));
+        $baseUrl = $scheme . '://' . $host . $portSuffix . rtrim($directory, '/');
+    }
+
+    return $baseUrl . '/' . ltrim($path, '/');
+}
+
 function csrf_token(): string
 {
     if (!isset($_SESSION['csrf_token'])) {

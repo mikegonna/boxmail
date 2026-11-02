@@ -28,6 +28,9 @@ if (!isset($_SESSION['user_id'])) {
             <span>สิทธิ์</span>
             <strong><?= escape((string) $_SESSION['role']) ?></strong>
         </div>
+        <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+            <a class="button" href="admin_reset_requests.php">ตรวจคำขอรีเซ็ตรหัสผ่าน</a>
+        <?php endif; ?>
         <a class="button button-secondary" href="logout.php">ออกจากระบบ</a>
     </main>
 </body>
