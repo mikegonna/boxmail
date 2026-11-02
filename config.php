@@ -80,6 +80,33 @@ function app_url(string $path): string
     return $baseUrl . '/' . ltrim($path, '/');
 }
 
+function private_document_directory(): string
+{
+    $directory = getenv('MAIL_STORAGE_PATH');
+    if ($directory === false || $directory === '') {
+        $directory = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'private'
+            . DIRECTORY_SEPARATOR . 'boxmail-documents';
+    }
+
+    if (!is_dir($directory) && !mkdir($directory, 0700, true) && !is_dir($directory)) {
+        throw new RuntimeException('Unable to create private document directory.');
+    }
+
+    $realDirectory = realpath($directory);
+    $documentRoot = isset($_SERVER['DOCUMENT_ROOT']) ? realpath($_SERVER['DOCUMENT_ROOT']) : false;
+    if ($realDirectory === false || ($documentRoot !== false && (
+        $realDirectory === $documentRoot
+        || str_starts_with(
+            strtolower($realDirectory . DIRECTORY_SEPARATOR),
+            strtolower(rtrim($documentRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR)
+        )
+    ))) {
+        throw new RuntimeException('Document storage must be outside the web root.');
+    }
+
+    return $realDirectory;
+}
+
 function csrf_token(): string
 {
     if (!isset($_SESSION['csrf_token'])) {
