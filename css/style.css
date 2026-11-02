@@ -1,0 +1,181 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    padding: 28px 16px;
+    background:
+        radial-gradient(ellipse at 15% 15%, rgba(114, 139, 255, 0.18), transparent 34%),
+        radial-gradient(ellipse at 90% 85%, rgba(111, 226, 194, 0.16), transparent 32%),
+        #f4f6fb;
+    color: #20243a;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+.card {
+    width: min(100%, 430px);
+    padding: 36px;
+    border: 1px solid #e8eaf2;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 22px 65px rgba(37, 45, 80, 0.1);
+}
+
+.brand-mark {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: #5865d8;
+    color: #fff;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.eyebrow {
+    margin: 22px 0 6px;
+    color: #5865d8;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.subtitle {
+    margin: 8px 0 24px;
+    color: #73788b;
+    font-size: 14px;
+}
+
+form {
+    display: grid;
+    gap: 10px;
+}
+
+label {
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 13px;
+    border: 1px solid #dfe2eb;
+    border-radius: 10px;
+    outline: none;
+    background: #fff;
+    color: #20243a;
+    font: inherit;
+}
+
+input:focus {
+    border-color: #6874e2;
+    box-shadow: 0 0 0 3px rgba(88, 101, 216, 0.12);
+}
+
+input:focus-visible,
+.button:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(88, 101, 216, 0.45);
+    outline-offset: 3px;
+}
+
+.button {
+    min-height: 47px;
+    margin-top: 12px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 10px;
+    background: #5865d8;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: #4855c5;
+}
+
+.button-secondary {
+    margin-top: 24px;
+    background: #f0f1f8;
+    color: #343a68;
+}
+
+.button-secondary:hover {
+    background: #e6e8f4;
+}
+
+.form-footer {
+    margin: 22px 0 0;
+    color: #73788b;
+    font-size: 13px;
+    text-align: center;
+}
+
+a {
+    color: #4c59cd;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.optional {
+    color: #85899a;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.notice {
+    margin: 0 0 18px;
+    padding: 11px 13px;
+    border-radius: 9px;
+    font-size: 13px;
+}
+
+.notice-success {
+    background: #e9f8f0;
+    color: #1d7147;
+}
+
+.notice-error {
+    background: #fff0ef;
+    color: #a63e38;
+}
+
+.account-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f6f7fb;
+    font-size: 13px;
+}
+
+.account-info span {
+    color: #73788b;
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 28px 22px;
+    }
+}
