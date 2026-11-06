@@ -16,7 +16,7 @@ if ($messageId === false || $messageId === null || $messageId < 1) {
 
 try {
     $statement = db()->prepare(
-        'SELECT m.message_id, m.subject, m.body, m.sent_at,
+        'SELECT m.message_id, m.subject, m.body, m.sent_at, m.urgency, m.delivery_type, m.department,
                 sender.user_name AS sender_name, sender.full_name AS sender_full_name,
                 EXISTS (
                     SELECT 1 FROM mail_recipients AS access_check
@@ -106,7 +106,19 @@ $isInbox = (int) $message['is_recipient'] === 1;
             </div>
             <div class="detail-meta">
                 <p><span>จาก</span><strong><?= escape($message['sender_full_name']) ?> (@<?= escape($message['sender_name']) ?>)</strong></p>
-                <p><span>ถึง</span><strong><?= escape((string) $message['recipient_names']) ?></strong></p>
+                <p><span>ถึง</span><strong>
+                    <?= $message['delivery_type'] === 'all'
+                        ? 'ผู้ใช้ทุกคน'
+                        : ($message['delivery_type'] === 'department'
+                            ? 'แผนก ' . escape((string) $message['department'])
+                            : escape((string) $message['recipient_names'])) ?>
+                </strong></p>
+                <p><span>ความเร่งด่วน</span><strong><?= [
+                    'normal' => 'ปกติ',
+                    'urgent' => 'ด่วน',
+                    'very_urgent' => 'ด่วนมาก',
+                    'most_urgent' => 'ด่วนที่สุด',
+                ][$message['urgency']] ?? 'ปกติ' ?></strong></p>
                 <p><span>วันที่</span><strong><?= escape(date('d/m/Y H:i', strtotime($message['sent_at']))) ?></strong></p>
             </div>
             <div class="mail-body"><?= nl2br(escape($message['body'])) ?></div>

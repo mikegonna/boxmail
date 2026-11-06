@@ -12,11 +12,13 @@
     $userName = '';
     $fullName = '';
     $phone = '';
+    $department = '';
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userName = trim((string) ($_POST['user_name'] ?? ''));
         $fullName = trim((string) ($_POST['full_name'] ?? ''));
         $phone = trim((string) ($_POST['phones'] ?? ''));
+        $department = trim((string) ($_POST['department'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
         $confirmPassword = (string) ($_POST['confirm_password'] ?? '');
 
@@ -26,6 +28,8 @@
             $error = 'กรุณากรอกชื่อผู้ใช้ไม่เกิน 255 ตัวอักษร';
         } elseif ($fullName === '' || mb_strlen($fullName, 'UTF-8') > 255) {
             $error = 'กรุณากรอกชื่อ-นามสกุลไม่เกิน 255 ตัวอักษร';
+        } elseif ($department === '' || mb_strlen($department, 'UTF-8') > 100) {
+            $error = 'กรุณากรอกแผนกไม่เกิน 100 ตัวอักษร';
         } elseif (mb_strlen($phone, 'UTF-8') > 255) {
             $error = 'หมายเลขโทรศัพท์ต้องไม่เกิน 255 ตัวอักษร';
         } elseif (mb_strlen($password, 'UTF-8') < 8 || strlen($password) > 72) {
@@ -35,8 +39,8 @@
         } else {
             try {
                 $statement = db()->prepare(
-                    'INSERT INTO users (user_name, user_pass, full_name, phones, role)
-                    VALUES (:user_name, :user_pass, :full_name, :phones, :role)'
+                    'INSERT INTO users (user_name, user_pass, full_name, phones, role, department)
+                    VALUES (:user_name, :user_pass, :full_name, :phones, :role, :department)'
                 );
                 $statement->execute([
                     'user_name' => $userName,
@@ -44,6 +48,7 @@
                     'full_name' => $fullName,
                     'phones' => $phone,
                     'role' => 'user',
+                    'department' => $department,
                 ]);
 
                 header('Location: login.php?registered=1');
@@ -126,6 +131,16 @@
                 value="<?= escape($fullName) ?>"
                 required
                 autofocus
+            >
+
+            <label for="department">แผนก <span class="optional" style="color: #dc3545;">*</span></label>
+            <input
+                id="department"
+                name="department"
+                type="text"
+                maxlength="100"
+                value="<?= escape($department) ?>"
+                required
             >
 
             <label for="phones">หมายเลขโทรศัพท์ <span class="optional">(ไม่บังคับ)</span></label>

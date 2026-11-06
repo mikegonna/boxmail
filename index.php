@@ -23,7 +23,7 @@ try {
 
     if ($view === 'inbox') {
         $statement = db()->prepare(
-            'SELECT m.message_id, m.subject, m.body, m.sent_at, r.read_at,
+            'SELECT m.message_id, m.subject, m.body, m.sent_at, m.urgency, m.delivery_type, m.department, r.read_at,
                     sender.user_name AS sender_name, sender.full_name AS sender_full_name
              FROM mail_recipients AS r
              JOIN mail_messages AS m ON m.message_id = r.message_id
@@ -35,7 +35,7 @@ try {
         $statement->execute(['user_id' => $userId]);
     } else {
         $statement = db()->prepare(
-            'SELECT m.message_id, m.subject, m.body, m.sent_at, NULL AS read_at,
+            'SELECT m.message_id, m.subject, m.body, m.sent_at, m.urgency, m.delivery_type, m.department, NULL AS read_at,
                     NULL AS sender_name, NULL AS sender_full_name,
                     (SELECT GROUP_CONCAT(recipient.user_name ORDER BY recipient.user_name SEPARATOR ", ")
                      FROM mail_recipients AS sent_to
@@ -128,7 +128,19 @@ try {
                                 <span class="message-person">
                                     <?= $view === 'inbox'
                                         ? escape($message['sender_full_name'] . ' (@' . $message['sender_name'] . ')')
-                                        : 'ถึง: ' . escape((string) $message['recipient_names']) ?>
+                                        : ($message['delivery_type'] === 'all'
+                                            ? 'ถึง: ผู้ใช้ทุกคน'
+                                            : ($message['delivery_type'] === 'department'
+                                                ? 'ถึงแผนก: ' . escape((string) $message['department'])
+                                                : 'ถึง: ' . escape((string) $message['recipient_names']))) ?>
+                                </span>
+                                <span class="urgency-badge urgency-<?= escape($message['urgency']) ?>">
+                                    <?= [
+                                        'normal' => 'ปกติ',
+                                        'urgent' => 'ด่วน',
+                                        'very_urgent' => 'ด่วนมาก',
+                                        'most_urgent' => 'ด่วนที่สุด',
+                                    ][$message['urgency']] ?? 'ปกติ' ?>
                                 </span>
                                 <strong><?= escape($message['subject']) ?></strong>
                                 <span class="message-preview"><?= escape(mb_strimwidth($message['body'], 0, 150, '…', 'UTF-8')) ?></span>
